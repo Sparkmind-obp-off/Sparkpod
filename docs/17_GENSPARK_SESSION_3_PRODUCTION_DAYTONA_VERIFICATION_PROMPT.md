@@ -53,6 +53,21 @@ If a production browser test asks for a token, it means **`SPARKPOD_ACCESS_TOKEN
 
 Do NOT ask the owner to send either secret to GitHub or to you.
 
+## Session 3 secure token bootstrap
+Before browser-based production verification, ensure that a valid `SPARKPOD_ACCESS_TOKEN` is securely provisioned for the SparkPod production environment using the available approved secret-management/deployment capability.
+
+Rules:
+- The token must be generated or provisioned securely, not hard-coded in source.
+- Store it only through the approved production secret-management mechanism.
+- Never commit the token to GitHub.
+- Never place it in source code, documentation, URLs, browser persistent storage, D1, logs, console output, or API responses.
+- Never print the token into build logs or deployment logs.
+- Do not expose the `DAYTONA_API_KEY` while doing this.
+- After provisioning, verify only that authentication works; do not reveal the credential value in logs or reports.
+- If the available deployment/secret-management capability cannot securely provision the token, report that as the exact blocker instead of inventing or exposing a credential.
+
+The browser UI may accept the authorized operator's token in tab memory for the smoke test. Do not add a token persistence mechanism merely to simplify testing.
+
 ## Session 3 target
 Prove this exact production path:
 
