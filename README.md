@@ -1,34 +1,47 @@
 # SparkPod
 
-SparkPod is a standalone AI execution platform. It turns a user instruction into an isolated execution environment, runs approved tools/commands, and returns verified results.
+SparkPod v0.1 is a provider-neutral isolated execution control surface. It runs the single approved smoke command through a server-side Daytona adapter, verifies the exact result, and guarantees cleanup.
 
-## MVP principle
+## Completed
+- Hono/Cloudflare Pages application and minimal execution UI
+- Authenticated workspace boundary backed by Cloudflare D1
+- Provider-neutral `ExecutionProvider` contract
+- Daytona create → ready → execute → verify → cleanup adapter
+- Normalized errors, correlation IDs, safe lifecycle audit events
+- Fixed v0.1 command policy: `printf 'SparkPod OK'`
+- Unit/adapter/security-oriented tests
 
-`Prompt → Agent/Orchestrator → Tool Contract → Execution Adapter → Daytona Sandbox → Result → UI`
+## Routes
+- `GET /` — control surface
+- `GET /api/v1/health` — public application health
+- `GET /api/v1/health/provider` — authenticated provider health
+- `POST /api/v1/workspaces` — create owned workspace
+- `POST /api/v1/executions` — synchronous isolated execution
+- `GET /api/v1/executions/:id` — retrieve owned result
+- `POST /api/v1/executions/:id/cancel` — explicit v0.1 cancellation response
 
-Daytona is the first execution provider, not the product itself. Cloudflare is the primary application and deployment platform.
+Authenticated routes require `Authorization: Bearer <SPARKPOD_ACCESS_TOKEN>`.
 
-## Scope of v0.1
+## Production
+- URL: https://sparkpod-b97.pages.dev
+- Platform: Cloudflare Pages + D1
+- Database: `sparkpod-production`
+- Deployment: active
+- Provider verification: pending `DAYTONA_API_KEY` production secret
 
-- Prompt-based execution request
-- Workspace/session boundary
-- Daytona adapter
-- Sandbox create/readiness/execute/cleanup lifecycle
-- Terminal/process execution
-- Safe result streaming/polling
-- Server-side provider credentials
-- Cloudflare production deployment
-- Provider-independent contracts
-- Audit-safe observability
+## Local development
+Create `.dev.vars` (never commit it) with `DAYTONA_API_KEY`, `SPARKPOD_ACCESS_TOKEN`, and `SPARKPOD_SESSION_SECRET`, then run:
 
-## Explicit non-goals
+```bash
+npm install
+npm run db:migrate:local
+npm test
+npm run typecheck
+npm run build
+```
 
-Threads discovery, social APIs, marketplace features, billing, multi-provider execution, autonomous long-running agents, and advanced code preview are out of scope for v0.1.
+## Not implemented
+Persistent provider sandboxes, arbitrary commands, additional providers, async queues, teams, billing, connectors/MCP, and Threads-specific features are intentionally outside v0.1.
 
-## Architecture rule
-
-SparkPod owns orchestration and contracts. Daytona owns sandbox execution. No consumer application may depend directly on Daytona-specific implementation details.
-
-## Documents
-
-See `docs/` for product requirements, architecture, contracts, security, testing, observability, roadmap, and implementation prompts.
+## Next step
+Configure the Daytona production secret, run the real production smoke lifecycle repeatedly, then rotate the generated SparkPod access token to an operator-managed value.

@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sparkpod",
+  "compatibility_date": "2026-09-12",
+  "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": "./dist",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sparkpod-production",
+      "database_id": "0fa2ad39-03c0-4240-b9ca-5b54d5f3e7e3"
+    }
+  ]
+}
