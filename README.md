@@ -54,7 +54,7 @@ The token is not stored in local storage, cookies, source code, or URLs. Refresh
 - **Platform:** Cloudflare Pages + D1
 - **Current URL:** https://sparkpod-b97.pages.dev
 - **Database:** `sparkpod-production`
-- **Deployment status:** active; Session 2 redeploy pending the current release workflow
+- **Deployment status:** Session 2 active (deployment: https://230e8e29.sparkpod-b97.pages.dev)
 - **Provider verification:** blocked until `DAYTONA_API_KEY` is manually configured as a Cloudflare production secret
 
 ## Local development
